@@ -8,12 +8,15 @@
     textarea, input { width: 100%; padding: 8px; margin-top: 5px; }
     button { padding: 10px 20px; margin-top: 15px; }
     #resultado { margin-top: 30px; background: #f4f4f4; padding: 20px; border-radius: 8px; }
+
     #loading {
       margin-top: 20px;
       font-weight: bold;
       color: #555;
+      display: none;
       animation: pulse 1s infinite;
     }
+
     @keyframes pulse {
       0% { opacity: 0.3; }
       50% { opacity: 1; }
@@ -36,7 +39,7 @@
     <button type="submit">Analisar</button>
   </form>
 
-  <div id="loading" style="display: none;">🔍 Analisando comportamento...</div>
+  <div id="loading">🔍 Analisando comportamento...</div>
   <div id="resultado"></div>
 
   <script>
