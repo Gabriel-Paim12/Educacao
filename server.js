@@ -3,21 +3,25 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const { OpenAI } = require('openai');
-const path = require('path'); // 👈 Aqui está o path
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname)));
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
-
-// 👇 Rota principal que envia o index.html
+// Rota principal que envia o index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Configuração da OpenAI
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
+// Rota de análise infantil
 app.post('/analisar', async (req, res) => {
   const { nome, idade, descricao } = req.body;
 
@@ -34,11 +38,13 @@ app.post('/analisar', async (req, res) => {
     res.json({ resposta });
   } catch (error) {
     console.error('Erro ao chamar a API:', error.message);
-    res.status(500).json({ resposta: 'Erro ao processar a análise. Verifique a chave da API ou tente novamente.' });
+    res.status(500).json({
+      resposta: 'Erro ao processar a análise. Verifique a chave da API ou tente novamente.'
+    });
   }
 });
 
-const PORT = 3000;
+// Inicialização do servidor
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
