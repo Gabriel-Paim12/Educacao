@@ -1,0 +1,19 @@
+{
+  "name": "educacao",
+  "version": "1.0.0",
+  "description": "Este projeto utiliza a API da OpenAI para gerar análises de comportamento infantil com base em descrições fornecidas por profissionais da educação.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "Gabriel Paim",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "openai": "^5.23.1"
+  }
+}
