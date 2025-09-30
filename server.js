@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const { OpenAI } = require('openai');
+const path = require('path'); // 👈 Aqui está o path
 
 const app = express();
 app.use(bodyParser.json());
@@ -10,6 +11,11 @@ app.use(express.static(path.join(__dirname)));
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
+});
+
+// 👇 Rota principal que envia o index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.post('/analisar', async (req, res) => {
