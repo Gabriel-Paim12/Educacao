@@ -8,6 +8,17 @@
     textarea, input { width: 100%; padding: 8px; margin-top: 5px; }
     button { padding: 10px 20px; margin-top: 15px; }
     #resultado { margin-top: 30px; background: #f4f4f4; padding: 20px; border-radius: 8px; }
+    #loading {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #555;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.3; }
+      50% { opacity: 1; }
+      100% { opacity: 0.3; }
+    }
   </style>
 </head>
 <body>
@@ -25,26 +36,39 @@
     <button type="submit">Analisar</button>
   </form>
 
+  <div id="loading" style="display: none;">🔍 Analisando comportamento...</div>
   <div id="resultado"></div>
 
   <script>
-    document.getElementById('formulario').addEventListener('submit', async function(e) {
+    const form = document.getElementById('formulario');
+    const loading = document.getElementById('loading');
+    const resultado = document.getElementById('resultado');
+
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      const form = e.target;
+      loading.style.display = 'block';
+      resultado.innerHTML = '';
+
       const dados = {
         nome: form.nome.value,
         idade: form.idade.value,
         descricao: form.descricao.value
       };
 
-      const resposta = await fetch('/analisar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dados)
-      });
+      try {
+        const resposta = await fetch('/analisar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dados)
+        });
 
-      const resultado = await resposta.json();
-      document.getElementById('resultado').innerHTML = `<h3>Resultado da IA:</h3><p>${resultado.resposta}</p>`;
+        const json = await resposta.json();
+        resultado.innerHTML = `<h3>Resultado da IA:</h3><p>${json.resposta}</p>`;
+      } catch (err) {
+        resultado.innerHTML = `<p>Erro ao analisar: ${err.message}</p>`;
+      } finally {
+        loading.style.display = 'none';
+      }
     });
   </script>
 </body>
